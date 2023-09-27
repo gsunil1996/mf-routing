@@ -4,7 +4,10 @@ const deps = require("./package.json").dependencies;
 
 module.exports = (_, argv) => ({
   output: {
-    publicPath: "http://localhost:8081/",
+    publicPath:
+      argv.mode === "development"
+        ? "http://localhost:8081/"
+        : "https://mf-routing-marketing.vercel.app/",
   },
 
   resolve: {
@@ -56,7 +59,10 @@ module.exports = (_, argv) => ({
       name: "marketing",
       filename: "remoteEntry.js",
       remotes: {
-        page_not_found: "page_not_found@http://localhost:8084/remoteEntry.js",
+        page_not_found:
+          argv.mode === "development"
+            ? "page_not_found@http://localhost:8084/remoteEntry.js"
+            : "page_not_found@https://mf-routing-page-not-found.vercel.app/remoteEntry.js",
       },
       exposes: {
         "./MarketingApp": "./src/bootstrap",
